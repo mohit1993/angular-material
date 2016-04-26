@@ -5,19 +5,27 @@
   <link href="./assets/app.css" rel="stylesheet"/>
 </head>
 
-<body ng-app="starterApp" layout="column">
+<body ng-app="starterApp" ng-controller="UserController as ul" layout="column">
   
   <!-- Container #1 (see wireframe) -->
   <md-toolbar layout="row" >
+    <md-button class="menu" hide-gt-sm ng-click="ul.togglelist()" aria-label="Show User List">
+      <md-icon md-svg-icon="menu" ></md-icon>
+    </md-button>
     <h1>Angular Material - Starter App</h1>
   </md-toolbar>
 
   <div flex layout="row">
-    <md-sidenav md-is-locked-open="true " class="md-whiteframe-4dp">
+
+    <md-sidenav ng-click="ul.toggleList()"
+                md-is-open
+                md-is-locked-open="$mdMedia('gt-sm')"
+                md-component-id="left"
+                class="md-whiteframe-z2">
       <md-list>
-        <md-list-item ng-repeat="u in ul.users">
-          <md-button ng-click="ul.selectUser(it)" ng-class="{'selected': u === ul.selected">
-           <md-icon md-svg-src="{{u.avatar}}" class="avatar"></md-icon>
+        <md-list-item ng-repeat="it in ul.users">
+          <md-button ng-click="ul.selectUser(it)" ng-class="{'selected': it === ul.selected}">
+           <md-icon md-svg-icon="{{it.avatar}}" class="avatar"></md-icon>
            {{it.name}}
           </md-button>
         </md-list-item>
@@ -25,12 +33,13 @@
     </md-sidenav>
 
     <md-content flex id="content">
-      <md-icon md-svg-src="{{ul.selected.avatar}}" class="avatar"></md-icon> 
+      <md-icon md-svg-icon="{{ul.selected.avatar}}" class="avatar"></md-icon> 
       <h2>{{ul.selected.name}}</h2>
       <p>{{ul.selected.content}}</p>
 
-      <md-button class="share" md-no-ink ng-click="ul.makeContact(ul.selected)">
-        <md-icon md-svg-src="share"></md-icon>
+      <md-button class="share" md-no-ink ng-click="ul.makeContact(ul.selected)"
+            aria-label="Share with {{ul.selected.name}}">
+        <md-icon md-svg-icon="share"></md-icon>
       </md-button>
     </md-content>
   </div>
@@ -44,21 +53,29 @@
   
   <!-- Your custom javascript files -->
   <script src="./src/users/User.js"></script>
-  <script src="./src/users/UserListController.js"></script>
   <script src="./src/users/UserDataservice.js"></script>
+  <script src="./src/users/UserListController.js"></script>
 
   <!-- Your application bootstrap  -->
   <script type="text/javascript">    
     angular
-      .module('starterApp', ['ngMaterial','users']);
-      .config(function( $mdIconProvider ){
+      .module('starterApp', ['ngMaterial','users'])
+      .config(function($mdIconProvider,$mdThemingProvider){
         //Register the user avatar icons
-        $mdIconProvider.defaultIconSet("./assets/svg/avatars.svg",128);
-        $mdIconProvider.icon("share","./assets/svg/share.svg",24);
+        $mdIconProvider
+          .defaultIconSet('./assets/svg/avatars.svg',128)
+          .icon("share","./assets/svg/share.svg",24)
+          .icon("menu", "./assets/svg/menu.svg", 24)
+          .icon("share", "./assets/svg/share.svg", 24)
+          .icon("google_plus", "./assets/svg/google_plus.svg", 512)
+          .icon("hangouts", "./assets/svg/hangouts.svg", 512)
+          .icon("twitter", "./assets/svg/twitter.svg", 512)
+          .icon("phone", "./assets/svg/phone.svg", 512);
+
+        $mdThemingProvider.theme('default')
+              .primaryPalette('brown')
+              .accentPalette('red');
       })
-      .controller('mainController',function($scope,users){
-        $scope.users = users.UserController();
-      });
   </script>
   
 </body>

@@ -1,9 +1,9 @@
-(fuction(){
+(function(){
 	'use strict';
 
 	angular
 		.module('users')
-		.config('UserController',[
+		.controller('UserController',[
 			'userService','$mdSidenav','$mdBottomSheet','$timeout','$log',
 			UserController
 		]);
@@ -19,8 +19,8 @@
 		
 			userService
 				.loadAllUsers()
-				.then(function(users){
-					self.user     = [].concat(users);
+				.then( function(users){
+					self.users     = [].concat(users);
 					self.selected = users[0];
 				});
 

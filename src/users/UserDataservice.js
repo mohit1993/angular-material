@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular.module('users')
-		.service('userservice',['$q',UserService]);
+		.service('userService',['$q',UserService]);
 
 	function UserService($q){
 		var users = [
